@@ -1,0 +1,276 @@
+{% from "sidebar.html" import sidebar %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results – E-Commerce Analytics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body class="dashboard-page">
+    {{ sidebar('results', user) }}
+
+    <main class="main-content">
+        <header class="dashboard-header">
+            <div>
+                <h1>📊 Analytics Results</h1>
+                <p>Comprehensive model performance reports and business insights</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-primary" onclick="generateReport()">📥 Download Report</button>
+            </div>
+        </header>
+
+        <!-- Summary -->
+        <section class="report-summary">
+            <div class="summary-card">
+                <h3>📊 Analysis Summary</h3>
+                <div class="summary-grid">
+                    <div class="summary-item"><div class="summary-label">Customers Analyzed</div><div class="summary-value">1,000</div></div>
+                    <div class="summary-item"><div class="summary-label">Total Transactions</div><div class="summary-value">5,000</div></div>
+                    <div class="summary-item"><div class="summary-label">Analysis Period</div><div class="summary-value">6 months</div></div>
+                    <div class="summary-item"><div class="summary-label">Models Trained</div><div class="summary-value">3</div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Model Performance -->
+        <section class="model-performance-section">
+            <h2 class="section-heading">🤖 Model Performance</h2>
+            <div class="performance-grid">
+                <div class="performance-card">
+                    <div class="performance-header">
+                        <h4>Churn Prediction</h4>
+                        <span class="model-badge">Random Forest</span>
+                    </div>
+                    <div class="performance-metrics">
+                        <div class="metric-row">
+                            <span class="metric-name">Accuracy</span>
+                            <div class="metric-bar"><div class="metric-fill" id="churn-accuracy-fill" style="width:87.4%"></div></div>
+                            <span class="metric-percent" id="churn-accuracy-val">87.4%</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-name">Precision</span>
+                            <div class="metric-bar"><div class="metric-fill" id="churn-precision-fill" style="width:85.2%"></div></div>
+                            <span class="metric-percent" id="churn-precision-val">85.2%</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-name">Recall</span>
+                            <div class="metric-bar"><div class="metric-fill" id="churn-recall-fill" style="width:89.1%"></div></div>
+                            <span class="metric-percent" id="churn-recall-val">89.1%</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-name">F1 Score</span>
+                            <div class="metric-bar"><div class="metric-fill" id="churn-f1-fill" style="width:87.1%"></div></div>
+                            <span class="metric-percent" id="churn-f1-val">87.1%</span>
+                        </div>
+                    </div>
+                    <div class="top-features">
+                        <h5>Top Predictors</h5>
+                        <ul>
+                            <li>1. Recency (Days since purchase)</li>
+                            <li>2. Total Spent (Lifetime value)</li>
+                            <li>3. Transaction Frequency</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="performance-card">
+                    <div class="performance-header">
+                        <h4>Sales Forecast</h4>
+                        <span class="model-badge">Random Forest</span>
+                    </div>
+                    <div class="performance-metrics">
+                        <div class="metric-row">
+                            <span class="metric-name">R² Score</span>
+                            <div class="metric-bar"><div class="metric-fill" id="sales-r2-fill" style="width:84.2%"></div></div>
+                            <span class="metric-percent" id="sales-r2-val">0.842</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-name">RMSE</span>
+                            <div class="metric-bar"><div class="metric-fill" id="sales-rmse-fill" style="width:92%"></div></div>
+                            <span class="metric-percent" id="sales-rmse-val">$45.20</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-name">MAE</span>
+                            <div class="metric-bar"><div class="metric-fill" id="sales-mae-fill" style="width:88%"></div></div>
+                            <span class="metric-percent" id="sales-mae-val">$32.15</span>
+                        </div>
+                    </div>
+                    <div class="top-features">
+                        <h5>Top Predictors</h5>
+                        <ul>
+                            <li>1. Transaction History</li>
+                            <li>2. Average Order Value</li>
+                            <li>3. Customer Lifetime (Days)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="performance-card">
+                    <div class="performance-header">
+                        <h4>Segmentation</h4>
+                        <span class="model-badge">K-Means</span>
+                    </div>
+                    <div class="performance-metrics">
+                        <div class="metric-row">
+                            <span class="metric-name">Silhouette</span>
+                            <div class="metric-bar"><div class="metric-fill" style="width:76%"></div></div>
+                            <span class="metric-percent">0.76</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-name">Clusters</span>
+                            <div class="metric-bar"><div class="metric-fill" style="width:100%"></div></div>
+                            <span class="metric-percent">4</span>
+                        </div>
+                    </div>
+                    <div class="top-features">
+                        <h5>RFM Basis</h5>
+                        <ul>
+                            <li>1. Recency</li>
+                            <li>2. Frequency</li>
+                            <li>3. Monetary Value</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Visualizations -->
+        <section class="visualization-section">
+            <h2 class="section-heading">📈 Model Visualizations</h2>
+            <div class="viz-grid">
+                <div class="viz-card">
+                    <h4>Churn Confusion Matrix</h4>
+                    <canvas id="confusionMatrix"></canvas>
+                    <div class="viz-legend">
+                        <div><span class="legend-box true-positive"></span>True Positive</div>
+                        <div><span class="legend-box true-negative"></span>True Negative</div>
+                        <div><span class="legend-box false-positive"></span>False Positive</div>
+                        <div><span class="legend-box false-negative"></span>False Negative</div>
+                    </div>
+                </div>
+                <div class="viz-card">
+                    <h4>Feature Importance (Churn Model)</h4>
+                    <canvas id="featureImportance"></canvas>
+                </div>
+                <div class="viz-card">
+                    <h4>Sales: Actual vs Predicted</h4>
+                    <canvas id="salesPredictionViz"></canvas>
+                </div>
+                <div class="viz-card">
+                    <h4>Customer Segment Distribution</h4>
+                    <canvas id="segmentDistribution"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Business Insights -->
+        <section class="insights-section-detailed">
+            <h2 class="section-heading">💡 Key Business Insights</h2>
+            <div class="insights-container">
+                <div class="insight-panel">
+                    <div class="insight-header"><span class="insight-icon">🎯</span><h3>Customer Retention</h3></div>
+                    <div class="insight-content">
+                        <p class="insight-main">24.3% of customers are at high churn risk</p>
+                        <ul class="insight-recommendations">
+                            <li><strong>Immediate:</strong> Target 224 at-risk customers with personalised retention campaigns</li>
+                            <li><strong>Key Factor:</strong> Customers with 30+ days recency are 3× more likely to churn</li>
+                            <li><strong>Win-back:</strong> 213 lost customers have 35% reactivation potential</li>
+                            <li><strong>ROI:</strong> $50 retention spend could save $70K in customer lifetime value</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="insight-panel">
+                    <div class="insight-header"><span class="insight-icon">💰</span><h3>Revenue Optimization</h3></div>
+                    <div class="insight-content">
+                        <p class="insight-main">Champions segment generates 38% of total revenue</p>
+                        <ul class="insight-recommendations">
+                            <li><strong>Opportunity:</strong> Upselling to loyal customers could increase ARPU by $120</li>
+                            <li><strong>Product Mix:</strong> Electronics category has highest margin potential</li>
+                            <li><strong>Pricing:</strong> 15% of transactions cluster in the $100–$150 sweet spot</li>
+                            <li><strong>Cross-sell:</strong> Bundle recommendations could boost AOV by 18%</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="insight-panel">
+                    <div class="insight-header"><span class="insight-icon">📊</span><h3>Segment Strategy</h3></div>
+                    <div class="insight-content">
+                        <p class="insight-main">4 distinct RFM segments with unique behaviors</p>
+                        <ul class="insight-recommendations">
+                            <li><strong>Champions (24.5%):</strong> Focus on VIP programs and exclusive offers</li>
+                            <li><strong>Loyal (31.8%):</strong> Increase engagement with personalised content</li>
+                            <li><strong>At Risk (22.4%):</strong> Deploy re-engagement campaigns immediately</li>
+                            <li><strong>Lost (21.3%):</strong> Test win-back with targeted deep discounts</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recommendations Timeline -->
+        <section class="recommendations-summary">
+            <h2 class="section-heading">🚀 Recommended Actions</h2>
+            <div class="action-timeline">
+                <div class="timeline-item urgent">
+                    <div class="timeline-marker">1</div>
+                    <div class="timeline-content">
+                        <h4>Immediate (This Week)</h4>
+                        <ul>
+                            <li>Launch retention campaign for 224 at-risk customers</li>
+                            <li>Send win-back emails to recently churned segment</li>
+                            <li>Implement automated churn alerts for weekly monitoring</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item important">
+                    <div class="timeline-marker">2</div>
+                    <div class="timeline-content">
+                        <h4>Short-term (This Month)</h4>
+                        <ul>
+                            <li>Deploy personalised product recommendations engine</li>
+                            <li>Create segment-specific marketing campaigns</li>
+                            <li>A/B test pricing strategies in high-value segments</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item ongoing">
+                    <div class="timeline-marker">3</div>
+                    <div class="timeline-content">
+                        <h4>Long-term (Next Quarter)</h4>
+                        <ul>
+                            <li>Build loyalty program targeting Champions segment</li>
+                            <li>Optimise inventory based on sales predictions</li>
+                            <li>Expand data collection to improve model accuracy</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Export -->
+        <section class="export-section">
+            <h2 class="section-heading">📥 Export Reports</h2>
+            <div class="export-options">
+                <button class="export-btn" onclick="generateReport()">
+                    <span class="export-icon">📄</span>
+                    <div><div class="export-title">Text Report</div><div class="export-desc">Full analytics summary</div></div>
+                </button>
+                <button class="export-btn" onclick="exportCSV()">
+                    <span class="export-icon">📊</span>
+                    <div><div class="export-title">CSV Data</div><div class="export-desc">Key metrics as CSV</div></div>
+                </button>
+                <button class="export-btn" onclick="exportPDF()">
+                    <span class="export-icon">📈</span>
+                    <div><div class="export-title">PDF Report</div><div class="export-desc">With visualizations</div></div>
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/results.js') }}"></script>
+</body>
+</html>

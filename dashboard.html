@@ -1,0 +1,128 @@
+{% from "sidebar.html" import sidebar %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard – E-Commerce Analytics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body class="dashboard-page">
+    {{ sidebar('dashboard', user) }}
+
+    <main class="main-content">
+        <header class="dashboard-header">
+            <div>
+                <h1>Analytics Dashboard</h1>
+                <p>Welcome back, {{ user.name if user else 'User' }}! Here's your business overview.</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-icon" title="Refresh" onclick="location.reload()">🔄</button>
+                <button class="btn-icon" title="Export" onclick="exportData()">📥</button>
+                <button class="btn-icon" title="Notifications">🔔</button>
+            </div>
+        </header>
+
+        <!-- Key Metrics -->
+        <section class="metrics-section">
+            <div class="metric-card">
+                <div class="metric-icon" style="background:linear-gradient(135deg,#667eea,#764ba2)">👥</div>
+                <div class="metric-content">
+                    <div class="metric-label">Total Customers</div>
+                    <div class="metric-value" id="totalCustomers">—</div>
+                    <div class="metric-change positive">↑ +12.5% from last month</div>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon" style="background:linear-gradient(135deg,#f093fb,#f5576c)">💰</div>
+                <div class="metric-content">
+                    <div class="metric-label">Total Revenue</div>
+                    <div class="metric-value" id="totalRevenue">—</div>
+                    <div class="metric-change positive">↑ +8.2% from last month</div>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">📊</div>
+                <div class="metric-content">
+                    <div class="metric-label">Avg Transaction</div>
+                    <div class="metric-value" id="avgTransaction">—</div>
+                    <div class="metric-change positive">↑ +5.3% from last month</div>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon" style="background:linear-gradient(135deg,#fa709a,#fee140)">⚠️</div>
+                <div class="metric-content">
+                    <div class="metric-label">Churn Rate</div>
+                    <div class="metric-value" id="churnRate">—</div>
+                    <div class="metric-change negative">↓ -2.1% from last month</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts -->
+        <section class="charts-section">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3>Transaction Amount Distribution</h3>
+                    <select class="chart-filter"><option>All time</option></select>
+                </div>
+                <canvas id="amountChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3>Sales by Category</h3>
+                    <select class="chart-filter"><option>All time</option></select>
+                </div>
+                <canvas id="categoryChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-header"><h3>Customer Age Distribution</h3></div>
+                <canvas id="ageChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-header"><h3>Monthly Revenue Trend</h3></div>
+                <canvas id="revenueChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Customer Segments -->
+        <section class="segments-section">
+            <h2 class="section-heading">Customer Segments</h2>
+            <div class="segments-grid" id="segmentsGrid">
+                <!-- Populated by dashboard.js -->
+                <div style="color:var(--text-muted);padding:1rem">Loading segments…</div>
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="actions-section">
+            <h2 class="section-heading">Quick Actions</h2>
+            <div class="actions-grid">
+                <div class="action-card">
+                    <div class="action-icon">🔮</div>
+                    <h4>Run Predictions</h4>
+                    <p>Predict customer churn probability and future sales</p>
+                    <a href="/predict" class="btn-small">Start Predicting</a>
+                </div>
+                <div class="action-card">
+                    <div class="action-icon">📊</div>
+                    <h4>View Reports</h4>
+                    <p>Detailed model performance and business insights</p>
+                    <a href="/results" class="btn-small">View Reports</a>
+                </div>
+                <div class="action-card">
+                    <div class="action-icon">📥</div>
+                    <h4>Export Data</h4>
+                    <p>Download analytics summary as CSV</p>
+                    <button class="btn-small" onclick="exportData()">Export CSV</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

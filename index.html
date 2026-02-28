@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}E-Commerce Analytics Platform{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% endblock %}
+{% block body_class %}landing-page{% endblock %}
+{% block body %}
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo"><h2>📊 E-Commerce Analytics</h2></div>
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}" class="active">Home</a>
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('register') }}">Sign Up</a>
+        </div>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="hero-content">
+        <h1 class="hero-title">Transform Your Business Data into Insights</h1>
+        <p class="hero-subtitle">Advanced machine learning powered analytics — churn prediction, sales forecasting, and customer segmentation in one platform.</p>
+        <div class="hero-buttons">
+            <a href="{{ url_for('register') }}" class="btn btn-primary btn-large">Get Started Free</a>
+            <a href="{{ url_for('login') }}"    class="btn btn-secondary btn-large">Sign In</a>
+        </div>
+    </div>
+    <div class="hero-image">
+        <div class="floating-card card-1">
+            <div class="mini-stat">
+                <span class="stat-icon">👥</span>
+                <div><div class="stat-number">1,000+</div><div class="stat-label">Customers</div></div>
+            </div>
+        </div>
+        <div class="floating-card card-2">
+            <div class="mini-stat">
+                <span class="stat-icon">💰</span>
+                <div><div class="stat-number">$500K</div><div class="stat-label">Revenue</div></div>
+            </div>
+        </div>
+        <div class="floating-card card-3">
+            <div class="mini-stat">
+                <span class="stat-icon">📈</span>
+                <div><div class="stat-number">87.4%</div><div class="stat-label">Accuracy</div></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="features">
+    <h2 class="section-title">Powerful Features</h2>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h3>Customer Segmentation</h3>
+            <p>Automatically segment customers using K-means clustering on RFM (Recency, Frequency, Monetary) data.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🤖</div>
+            <h3>Churn Prediction</h3>
+            <p>Predict customer churn with 87.4% accuracy using Random Forest models trained on real behavioral data.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">💹</div>
+            <h3>Sales Forecasting</h3>
+            <p>Forecast future customer spending with R²=0.84 regression models for inventory and revenue planning.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>Real-time Dashboard</h3>
+            <p>Monitor KPIs, revenue trends, and customer behavior with beautiful interactive Chart.js visualizations.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🔍</div>
+            <h3>Deep Analytics</h3>
+            <p>Explore transaction patterns, category performance, age distributions, and geographic insights.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">💡</div>
+            <h3>Actionable Insights</h3>
+            <p>Get segment-specific recommendations with prioritized action timelines to optimize business strategy.</p>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="cta-content">
+        <h2>Ready to Grow Your Business?</h2>
+        <p>Join hundreds of businesses using data science to increase revenue and reduce churn.</p>
+        <a href="{{ url_for('register') }}" class="btn btn-large" style="background:white;color:var(--primary);">Create Free Account →</a>
+    </div>
+</section>
+
+<footer class="footer">
+    <p>&copy; 2026 E-Commerce Analytics Platform — Built with Flask &amp; scikit-learn</p>
+</footer>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}

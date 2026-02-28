@@ -1,0 +1,249 @@
+{% from "sidebar.html" import sidebar %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predictions – E-Commerce Analytics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body class="dashboard-page">
+    {{ sidebar('predict', user) }}
+
+    <main class="main-content">
+        <header class="dashboard-header">
+            <div>
+                <h1>🔮 AI Predictions</h1>
+                <p>Use machine learning to predict customer behavior and future sales</p>
+            </div>
+        </header>
+
+        <!-- Prediction Type Cards -->
+        <section class="prediction-types">
+            <div class="prediction-card">
+                <div class="prediction-header">
+                    <div class="prediction-icon churn">🚨</div>
+                    <div>
+                        <h3>Churn Prediction</h3>
+                        <p>Identify customers likely to leave</p>
+                    </div>
+                </div>
+                <div class="prediction-stats">
+                    <div class="stat-box"><div class="stat-value">87.4%</div><div class="stat-label">Accuracy</div></div>
+                    <div class="stat-box"><div class="stat-value">RF</div><div class="stat-label">Model</div></div>
+                </div>
+                <button class="btn-predict" onclick="showChurnForm()">Start Prediction →</button>
+            </div>
+
+            <div class="prediction-card">
+                <div class="prediction-header">
+                    <div class="prediction-icon sales">💹</div>
+                    <div>
+                        <h3>Sales Forecast</h3>
+                        <p>Predict future customer spending</p>
+                    </div>
+                </div>
+                <div class="prediction-stats">
+                    <div class="stat-box"><div class="stat-value">0.84</div><div class="stat-label">R² Score</div></div>
+                    <div class="stat-box"><div class="stat-value">RF</div><div class="stat-label">Model</div></div>
+                </div>
+                <button class="btn-predict" onclick="showSalesForm()">Start Forecast →</button>
+            </div>
+
+            <div class="prediction-card">
+                <div class="prediction-header">
+                    <div class="prediction-icon segment">🎯</div>
+                    <div>
+                        <h3>Customer Segment</h3>
+                        <p>Classify into RFM segments</p>
+                    </div>
+                </div>
+                <div class="prediction-stats">
+                    <div class="stat-box"><div class="stat-value">4</div><div class="stat-label">Segments</div></div>
+                    <div class="stat-box"><div class="stat-value">K-Means</div><div class="stat-label">Algorithm</div></div>
+                </div>
+                <button class="btn-predict" onclick="showSegmentForm()">Classify Now →</button>
+            </div>
+        </section>
+
+        <!-- Churn Form -->
+        <section id="churnForm" class="prediction-form-section" style="display:none">
+            <div class="form-container">
+                <div class="form-header">
+                    <h2>🚨 Churn Prediction</h2>
+                    <p>Enter customer details to predict churn probability using our Random Forest model</p>
+                </div>
+                <form id="churnPredictionForm" class="prediction-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Customer ID</label>
+                            <input type="text" name="customer_id" placeholder="e.g., CUST001" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Customer Age</label>
+                            <input type="number" name="age" placeholder="e.g., 35" min="18" max="100" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Number of Transactions</label>
+                            <input type="number" name="num_transactions" placeholder="e.g., 15" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Total Spent ($)</label>
+                            <input type="number" name="total_spent" placeholder="e.g., 1500" min="0" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Days Since Last Purchase (Recency)</label>
+                            <input type="number" name="recency" placeholder="e.g., 45" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Average Transaction Value ($)</label>
+                            <input type="number" name="avg_transaction" placeholder="e.g., 100" min="0" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Gender</label>
+                            <select name="gender" required>
+                                <option value="">Select Gender</option>
+                                <option value="M">Male</option>
+                                <option value="F">Female</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Customer Lifetime (Days)</label>
+                            <input type="number" name="lifetime" placeholder="e.g., 365" min="0" required>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="hideChurnForm()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">🔮 Predict Churn</button>
+                    </div>
+                </form>
+
+                <div id="churnResult" class="prediction-result" style="display:none">
+                    <div class="result-icon">🔮</div>
+                    <h3>Churn Prediction Result</h3>
+                    <div class="result-content">
+                        <div class="result-main">
+                            <div class="result-label">Churn Probability</div>
+                            <div class="result-value" id="churnProbability">—</div>
+                            <div class="result-status" id="churnStatus">—</div>
+                        </div>
+                        <div class="result-details">
+                            <h4>Key Risk Factors</h4>
+                            <ul id="churnFactors"><li>Loading…</li></ul>
+                        </div>
+                        <div class="result-actions">
+                            <button class="btn btn-primary" onclick="resetChurnForm()">New Prediction</button>
+                            <button class="btn btn-secondary" onclick="saveResult('churn')">Save Result</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sales Form -->
+        <section id="salesForm" class="prediction-form-section" style="display:none">
+            <div class="form-container">
+                <div class="form-header">
+                    <h2>💹 Sales Forecast</h2>
+                    <p>Predict future customer spending using our Random Forest regression model</p>
+                </div>
+                <form id="salesPredictionForm" class="prediction-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Customer ID</label>
+                            <input type="text" name="customer_id" placeholder="e.g., CUST001" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Customer Age</label>
+                            <input type="number" name="age" placeholder="e.g., 35" min="18" max="100" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Number of Transactions</label>
+                            <input type="number" name="num_transactions" placeholder="e.g., 15" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Days Since Last Purchase (Recency)</label>
+                            <input type="number" name="recency" placeholder="e.g., 45" min="0" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Average Transaction Value ($)</label>
+                            <input type="number" name="avg_transaction" placeholder="e.g., 100" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Customer Lifetime (Days)</label>
+                            <input type="number" name="lifetime" placeholder="e.g., 365" min="0" required>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="hideSalesForm()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">📈 Predict Sales</button>
+                    </div>
+                </form>
+
+                <div id="salesResult" class="prediction-result" style="display:none">
+                    <div class="result-icon">💰</div>
+                    <h3>Sales Forecast Result</h3>
+                    <div class="result-content">
+                        <div class="result-main">
+                            <div class="result-label">Predicted Spending</div>
+                            <div class="result-value" id="salesAmount">—</div>
+                            <div class="result-status" id="salesConfidence">—</div>
+                        </div>
+                        <div class="result-details">
+                            <h4>Prediction Details</h4>
+                            <div class="detail-grid">
+                                <div class="detail-item">
+                                    <span class="detail-label">Model Confidence (R²)</span>
+                                    <span class="detail-value" id="modelConfidence">—</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Prediction Range (±15%)</span>
+                                    <span class="detail-value" id="predictionRange">—</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="result-actions">
+                            <button class="btn btn-primary" onclick="resetSalesForm()">New Forecast</button>
+                            <button class="btn btn-secondary" onclick="saveResult('sales')">Save Result</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- History Table -->
+        <section class="recent-predictions">
+            <h2 class="section-heading">Recent Predictions</h2>
+            <div class="predictions-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th><th>Type</th><th>Customer ID</th>
+                            <th>Result</th><th>Confidence</th><th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="predictionsTableBody">
+                        <tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:2rem">
+                            Run a prediction above to see history here
+                        </td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/predict.js') }}"></script>
+</body>
+</html>

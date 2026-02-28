@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Login – E-Commerce Analytics{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% endblock %}
+{% block body_class %}auth-page{% endblock %}
+{% block body %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1>Welcome Back 👋</h1>
+            <p>Sign in to access your analytics dashboard</p>
+        </div>
+
+        <form id="loginForm" class="auth-form">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="you@example.com" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Your password" required>
+            </div>
+            <div class="form-options">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="remember"> Remember me
+                </label>
+                <a href="#" class="forgot-link">Forgot password?</a>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full">Sign In →</button>
+            <div class="auth-footer">
+                <p>Don't have an account? <a href="{{ url_for('register') }}">Create one free</a></p>
+            </div>
+        </form>
+
+        <div class="divider"><span>OR</span></div>
+        <div class="social-login">
+            <button class="btn-social btn-google"><span>🔍</span> Continue with Google</button>
+            <button class="btn-social btn-github"><span>🐙</span> Continue with GitHub</button>
+        </div>
+    </div>
+
+    <div class="auth-side">
+        <div class="auth-side-content">
+            <h2>Your Data, Your Decisions</h2>
+            <ul class="feature-list">
+                <li>✓ Real-time analytics dashboard</li>
+                <li>✓ AI-powered churn prediction</li>
+                <li>✓ Sales forecasting models</li>
+                <li>✓ Customer segmentation</li>
+                <li>✓ Export reports instantly</li>
+            </ul>
+            <div class="testimonial">
+                <p>"This platform transformed how we understand our customers. Revenue increased by 35%!"</p>
+                <span>– Sarah Johnson, CEO at RetailPro</span>
+            </div>
+        </div>
+    </div>
+</div>
+<a href="{{ url_for('index') }}" class="back-home">← Back to Home</a>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+{% endblock %}

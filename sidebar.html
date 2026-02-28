@@ -1,0 +1,36 @@
+{% macro sidebar(active_page, user) %}
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <h2>📊 Analytics</h2>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="/dashboard" class="nav-item {% if active_page=='dashboard' %}active{% endif %}">
+            <span class="icon">📈</span><span>Dashboard</span>
+        </a>
+        <a href="/predict" class="nav-item {% if active_page=='predict' %}active{% endif %}">
+            <span class="icon">🔮</span><span>Predictions</span>
+        </a>
+        <a href="/results" class="nav-item {% if active_page=='results' %}active{% endif %}">
+            <span class="icon">📊</span><span>Results</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span class="icon">👥</span><span>Customers</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span class="icon">⚙️</span><span>Settings</span>
+        </a>
+    </nav>
+    <div class="sidebar-footer">
+        <div class="user-profile">
+            <div class="user-avatar">
+                {{ (user.name[:2] if user and user.name else 'U')|upper }}
+            </div>
+            <div class="user-info">
+                <div class="user-name">{{ user.name if user else 'User' }}</div>
+                <div class="user-email">{{ user.email if user else '' }}</div>
+            </div>
+        </div>
+        <button class="btn-logout" onclick="logout()">Logout</button>
+    </div>
+</aside>
+{% endmacro %}
